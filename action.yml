@@ -1,0 +1,13 @@
+name: 'PR Dependency Check'
+description: 'Verify PR dependencies are merged or closed'
+branding:
+  icon: alert-triangle
+  color: orange
+runs:
+  using: 'node24'
+  main: 'dist/index.js'
+inputs:
+  custom-domains:
+    description: 'Space-delimited list of custom domains where issues may be found'
+    required: false
+    default: null

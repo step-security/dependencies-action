@@ -1,0 +1,30 @@
+{
+  "name": "dependencies-action",
+  "description": "A GitHub Action that enforces PR dependencies",
+  "version": "1.4.3",
+  "main": "index.js",
+  "scripts": {
+    "build": "ncc build index.js -o dist --license licenses.txt",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "axios": "^1.19.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.45.0",
+    "jest": "^29.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/step-security/dependencies-action.git"
+  },
+  "keywords": [],
+  "author": "step-security",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/step-security/dependencies-action/issues"
+  },
+  "homepage": "https://github.com/step-security/dependencies-action#readme"
+}
