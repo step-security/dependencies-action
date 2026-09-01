@@ -5,7 +5,7 @@ branding:
   color: orange
 runs:
   using: 'node24'
-  main: 'index.js'
+  main: 'dist/index.js'
 inputs:
   custom-domains:
     description: 'Space-delimited list of custom domains where issues may be found'

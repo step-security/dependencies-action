@@ -20,10 +20,15 @@ Works for both issues and PRs!
 
 Also supports custom domains for use with GitHub Enterprise!
 
-## See it in action:
+## Example scenario
 
-- [PR to be landed first](http://github.com/step-security/dependencies-action/pull/4)
-- [PR to be landed second](http://github.com/step-security/dependencies-action/pull/5)
+When PR #2 depends on PR #1, add this to PR #2's opening comment:
+
+```
+Depends on #1
+```
+
+The action will check that #1 is merged or closed before allowing #2 to be merged.
 
 ## Example usage
 
@@ -43,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Check Dependencies
     steps:
-    - uses: step-security/dependencies-action@main
+    - uses: step-security/dependencies-action@v1
       with:
         custom-domains: my-custom-domain.io another.domain.com
       env:
