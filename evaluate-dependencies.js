@@ -1,5 +1,5 @@
-const core = require('@actions/core');
-const github = require('@actions/github');
+import * as core from '@actions/core';
+import * as github from '@actions/github';
 
 var customDomains = core.getInput('custom-domains')?.split(/(\s+)/) ?? [];
 
@@ -30,7 +30,7 @@ function extractFromMatch(match) {
     };
 }
 
-function getAllDependencies(body) {
+export function getAllDependencies(body) {
     var allMatches = [];
 
     var quickLinkMatches = [...body.matchAll(quickLinkRegex)];
@@ -44,7 +44,7 @@ function getAllDependencies(body) {
             });
         });
     }
-    
+
     var extractableMatches = [...body.matchAll(partialLinkRegex)]
         .concat([...body.matchAll(partialUrlRegex)])
         .concat([...body.matchAll(fullUrlRegex)])
@@ -59,13 +59,13 @@ function getAllDependencies(body) {
     return allMatches;
 }
 
-async function evaluate() {
+export async function evaluate() {
     try {
         core.info('Initializing...');
         const myToken = process.env.GITHUB_TOKEN;
         const octokit = github.getOctokit(myToken);
 
-        const { data: pullRequest } = await octokit.pulls.get({
+        const { data: pullRequest } = await octokit.rest.pulls.get({
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
             pull_number: github.context.issue.number,
@@ -84,7 +84,7 @@ async function evaluate() {
         for (var d of dependencies) {
             core.info(`  Fetching '${JSON.stringify(d)}'`);
             var isPr = true;
-            var response = await octokit.pulls.get(d).catch(error => core.error(error));
+            var response = await octokit.rest.pulls.get(d).catch(error => core.error(error));
             if (response === undefined) {
                 isPr = false;
                 d = {
@@ -93,7 +93,7 @@ async function evaluate() {
                     issue_number: d.pull_number,
                 };
                 core.info(`  Fetching '${JSON.stringify(d)}'`);
-                response = await octokit.issues.get(d).catch(error => core.error(error));
+                response = await octokit.rest.issues.get(d).catch(error => core.error(error));
                 if (response === undefined) {
                     core.info('    Could not locate this dependency.  Treating as unresolved.');
                     dependencyIssues.push({ number: d.issue_number, title: `Unknown (in ${d.owner}/${d.repo} - could not be located)` });
@@ -134,9 +134,4 @@ async function evaluate() {
         core.setFailed(error.message);
         throw error;
     }
-}
-
-module.exports = {
-    evaluate: evaluate,
-    getAllDependencies: getAllDependencies
 }

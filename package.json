@@ -2,14 +2,21 @@
   "name": "dependencies-action",
   "description": "A GitHub Action that enforces PR dependencies",
   "version": "1.4.3",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "build": "ncc build index.js -o dist --license licenses.txt",
-    "test": "jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@actions/github$": "<rootDir>/__mocks__/@actions/github.js",
+      "^@actions/core$": "<rootDir>/__mocks__/@actions/core.js"
+    }
   },
   "dependencies": {
-    "@actions/core": "^1.2.6",
-    "@actions/github": "^4.0.0",
+    "@actions/core": "^2.0.3",
+    "@actions/github": "^8.0.1",
     "axios": "^1.19.0"
   },
   "devDependencies": {

@@ -1,10 +1,10 @@
-const evaluate = require('./evaluate-dependencies');
+import { getAllDependencies } from './evaluate-dependencies.js';
 
 process.env.GITHUB_REPOSITORY = 'owner/repo';
 
 const shorthand = 'Depends on #14'
 test('Shorthand', () => {
-    expect(evaluate.getAllDependencies(shorthand))
+    expect(getAllDependencies(shorthand))
         .toStrictEqual([{
             owner: 'owner',
             repo: 'repo',
@@ -14,7 +14,7 @@ test('Shorthand', () => {
 
 const partialLink = 'Depends on step-security/dependencies-action#5'
 test('partialLink', () => {
-    expect(evaluate.getAllDependencies(partialLink))
+    expect(getAllDependencies(partialLink))
         .toStrictEqual([{
             owner: 'step-security',
             repo: 'dependencies-action',
@@ -25,7 +25,7 @@ test('partialLink', () => {
 const shorthandAndPartialLink = `Depends on #14
 Depends on step-security/dependencies-action#5`
 test('shorthandAndPartialLink', () => {
-    expect(evaluate.getAllDependencies(shorthandAndPartialLink))
+    expect(getAllDependencies(shorthandAndPartialLink))
         .toStrictEqual([{
             owner: 'owner',
             repo: 'repo',
@@ -41,7 +41,7 @@ const shorthandAndPartialLinkWithBlankLineAtEnd = `Depends on #14
 Depends on step-security/dependencies-action#5
 `
 test('shorthandAndPartialLinkWithBlankLineAtEnd', () => {
-    expect(evaluate.getAllDependencies(shorthandAndPartialLinkWithBlankLineAtEnd))
+    expect(getAllDependencies(shorthandAndPartialLinkWithBlankLineAtEnd))
         .toStrictEqual([{
             owner: 'owner',
             repo: 'repo',
@@ -57,7 +57,7 @@ const shorthandAndPartialLinkWithBlankLineInMiddle = `Depends on #14
 
 Depends on step-security/dependencies-action#5`
 test('shorthandAndPartialLinkWithBlankLineInMiddle', () => {
-    expect(evaluate.getAllDependencies(shorthandAndPartialLinkWithBlankLineInMiddle))
+    expect(getAllDependencies(shorthandAndPartialLinkWithBlankLineInMiddle))
         .toStrictEqual([{
             owner: 'owner',
             repo: 'repo',
@@ -74,10 +74,10 @@ const multipleInDashBulletedListWithMixedLinkTypes = `- Blocked by: https://gith
 - Blocked By https://github.com/username/action_python/pull/1
 - Blocked By: https://github.com/username/action_pull_requests/pull/1
 - Related: https://github.com/username/dependencies-action/issues/28
-- Related: #213 
+- Related: #213
 - Related: #214 `
 test('multipleInDashBulletedListWithMixedLinkTypes', () => {
-    expect(evaluate.getAllDependencies(multipleInDashBulletedListWithMixedLinkTypes))
+    expect(getAllDependencies(multipleInDashBulletedListWithMixedLinkTypes))
         .toStrictEqual([{
             owner: 'username',
             repo: 'action_docker',
@@ -102,10 +102,10 @@ const multipleInStarBulletedListWithMixedLinkTypes = `* Blocked by: https://gith
 * Blocked By https://github.com/username/action_python/pull/1
 * Blocked By: https://github.com/username/action_pull_requests/pull/1
 * Related: https://github.com/username/dependencies-action/issues/28
-* Related: #213 
+* Related: #213
 * Related: #214 `
 test('multipleInStarBulletedListWithMixedLinkTypes', () => {
-    expect(evaluate.getAllDependencies(multipleInStarBulletedListWithMixedLinkTypes))
+    expect(getAllDependencies(multipleInStarBulletedListWithMixedLinkTypes))
         .toStrictEqual([{
             owner: 'username',
             repo: 'action_docker',
