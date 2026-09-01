@@ -1,5 +1,5 @@
-const core = require('@actions/core');
-const github = require('@actions/github');
+import * as core from '@actions/core';
+import * as github from '@actions/github';
 
 var customDomains = core.getInput('custom-domains')?.split(/(\s+)/) ?? [];
 
@@ -30,7 +30,7 @@ function extractFromMatch(match) {
     };
 }
 
-function getAllDependencies(body) {
+export function getAllDependencies(body) {
     var allMatches = [];
 
     var quickLinkMatches = [...body.matchAll(quickLinkRegex)];
@@ -44,7 +44,7 @@ function getAllDependencies(body) {
             });
         });
     }
-    
+
     var extractableMatches = [...body.matchAll(partialLinkRegex)]
         .concat([...body.matchAll(partialUrlRegex)])
         .concat([...body.matchAll(fullUrlRegex)])
@@ -59,7 +59,7 @@ function getAllDependencies(body) {
     return allMatches;
 }
 
-async function evaluate() {
+export async function evaluate() {
     try {
         core.info('Initializing...');
         const myToken = process.env.GITHUB_TOKEN;
@@ -134,9 +134,4 @@ async function evaluate() {
         core.setFailed(error.message);
         throw error;
     }
-}
-
-module.exports = {
-    evaluate: evaluate,
-    getAllDependencies: getAllDependencies
 }

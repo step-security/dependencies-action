@@ -1,7 +1,7 @@
-const fs = require('fs');
-const core = require('@actions/core');
-const axios = require('axios');
-const evaluate = require('./evaluate-dependencies');
+import fs from 'fs';
+import * as core from '@actions/core';
+import axios from 'axios';
+import * as evaluate from './evaluate-dependencies.js';
 
 async function validateSubscription() {
   let repoPrivate;
